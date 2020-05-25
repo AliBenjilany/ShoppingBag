@@ -1,0 +1,52 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+     
+    <h:head>
+    
+    </h:head>
+    <h:body>
+    
+    <h:outputStylesheet library="css" name="main.css"  />
+    
+    
+    <h:form>  
+	        <p:messages id="messages" />
+            <h:outputLabel for="txt1" value="Text 1: *" />
+            <p:inputText id="txt1" value="#{searchView.text1}" required="true" label="Text 1">
+                <f:validateLength minimum="2" />
+            </p:inputText>
+            <p:message for="txt1" />
+            <h:outputText value="#{searchView.text1}" />
+            <p:message for="@previous" />> 
+	        <p:commandButton process="@form:@child(1):txt1" update="@form" value="Process: @form:@child(1):txt1 (Text 1)" />
+	</h:form>
+    
+        <p:breadCrumb style="height:100">
+		    <p:menuitem value="Categories" url="#" />
+		    <p:menuitem value="Sports" url="#" />
+		    <p:menuitem value="Basketball" url="#" />
+		    <p:menuitem value="NBA" url="#" />
+		    <p:menuitem value="Teams" url="#" />
+		    <p:menuitem value="L.A. Lakers" url="#" />
+		    <p:menuitem value="Roster" url="#" />
+		    <p:menuitem value="Kobe Bryant" url="#" />
+		</p:breadCrumb>
+		
+		
+		<h:form prependId="false">
+			     <h:outputLabel value="User Id: " for="userId" />
+			     <h:inputText id="j_username" label="User Id" required="true" />
+			     <h:outputLabel value="Password: "  for ="password" />
+			     <h:inputSecret id="j_password"  />
+			     <h:commandButton value="Submit" action="#{loginBean.doLogin}" />
+			</h:form>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            
+            
+            
+    </h:body>
+</html>
+
+

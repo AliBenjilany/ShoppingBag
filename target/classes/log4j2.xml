@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration xmlns="http://logging.apache.org/log4j/2.0/config" status="WARN">
+
+    <Appenders>
+    
+        <!-- <Socket name="socket" host="localhost" port="4445">
+            <SerializedLayout />
+        </Socket>  -->
+    
+        <!--  <File name="file" fileName="webstore.log">
+            <PatternLayout>
+                <Pattern>%p %t %c - %m%n</Pattern>
+            </PatternLayout>
+        </File> -->
+        
+        <Console name="stdout" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%t] %-5p | %-60c | %m (%F:%L)%n"/>
+        </Console>
+        
+    </Appenders>
+
+    <Loggers>
+        
+        <!-- Tag logger helps filter logs starting only with the value of its name, let the levels fixed-->
+        <!-- Logger name="org.hibernate.SQL" level="debug" /-->
+        <!-- Logger name="org.hibernate.type" level="trace" / -->
+    	
+    	<!-- levels : all, trace, debug, info, warn, error, fatal, off -->
+        <Root level="info">
+            <!-- AppenderRef ref="file" / -->
+            <AppenderRef ref="stdout" />
+        </Root>
+        
+    </Loggers>
+
+</Configuration>

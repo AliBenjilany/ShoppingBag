@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags">
+    <f:view>
+        <head>
+            <title>Login page</title>
+        </head>
+        <body>
+            <h3>MagnaStore Login Page</h3>
+            
+			<h:form prependId="false">
+			     <h:outputLabel value="User Id: " for="userId" />
+			     <h:inputText id="username" label="User Id" required="true" />
+			     <h:outputLabel value="Password: "  for ="password" />
+			     <h:inputSecret id="password"  />
+			     
+			     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			     <h:commandButton value="Submit" action="#{loginBean.doLogin}" />
+			</h:form>
+
+            
+            
+            
+
+        </body>
+    </f:view>
+</html>

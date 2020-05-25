@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jee
+		http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/security 
+		http://www.springframework.org/schema/security/spring-security.xsd">
+		
+		
+	<http use-expressions="true" auto-config='true' disable-url-rewriting="false">
+	
+		<intercept-url pattern="/login*" access="isAnonymous()"/>
+		<form-login login-page="/login.xhtml"
+					login-processing-url="/j_spring_security_check"
+                    default-target-url="/"
+                    authentication-failure-url="/login.xhtml" />
+		<logout logout-url="/logout" logout-success-url="/"/>
+	</http>
+
+		<authentication-manager>
+			<authentication-provider>
+			<password-encoder hash="bcrypt"/>
+				<jdbc-user-service data-source-ref="MagnaSource"/>
+			</authentication-provider>
+		</authentication-manager>
+		
+		<jee:jndi-lookup jndi-name="jdbc/MyMagna" id="MagnaSource" expected-type = "javax.sql.DataSource"></jee:jndi-lookup>
+	
+		<beans:bean id="loggerListener" class="org.springframework.security.authentication.event.LoggerListener"/>
+</beans:beans>
