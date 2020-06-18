@@ -1,0 +1,40 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence 
+                   http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+             
+    <persistence-unit name="MagnaStore" transaction-type="JTA">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        
+
+        <jta-data-source>jdbc/MyMagna</jta-data-source>
+        
+        <!-- Here we specify mapped classes -->
+        <class>com.magnastore.Model.Address</class>
+        <class>com.magnastore.Model.Authority</class>  
+        <class>com.magnastore.Model.Brand</class>  
+        <class>com.magnastore.Model.Category</class>
+        <class>com.magnastore.Model.Complaint</class> 
+        <class>com.magnastore.Model.Coupon</class>
+        <class>com.magnastore.Model.CreditCard</class>
+        <class>com.magnastore.Model.CreditCardPayment</class>
+        <class>com.magnastore.Model.Order</class>
+        <class>com.magnastore.Model.OrderLine</class>
+        <class>com.magnastore.Model.Payment</class>
+        <class>com.magnastore.Model.PaypalPayment</class>
+        <class>com.magnastore.Model.Product</class>
+        <class>com.magnastore.Model.ProductImage</class>
+        <class>com.magnastore.Model.Review</class>
+        <class>com.magnastore.Model.Shipment</class>
+        <class>com.magnastore.Model.User</class>
+        <class>com.magnastore.Model.UserInformation</class>
+        
+        <properties>          
+            <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform" />
+        </properties>
+        
+    </persistence-unit>
+
+    
+</persistence>

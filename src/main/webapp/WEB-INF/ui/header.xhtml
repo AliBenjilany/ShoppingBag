@@ -1,0 +1,162 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags">
+	<!-- Preloader -->
+	<div class="preloader">
+		<div class="preloader-inner">
+			<div class="preloader-icon">
+				<span></span>
+				<span></span>
+			</div>
+		</div>
+	</div>
+	<!-- End Preloader -->
+	
+
+		<!-- Topbar -->
+		<div class="topbar">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-4 col-md-12 col-12">
+						<!-- Top Left -->
+						<div class="top-left">
+							<ul class="list-main">
+								<li><i class="ti-headphone-alt"></i>#{msg['support_phone']}</li>
+								<li><i class="ti-email"></i> #{msg['support_email']}</li>
+							</ul>
+						</div>
+						<!--/ End Top Left -->
+					</div>
+					<div class="col-lg-8 col-md-12 col-12">
+						<!-- Top Right -->
+						<div class="right-content">
+							<ul class="list-main">
+								
+								<ui:fragment  rendered="#{sec:areAnyGranted('ROLE_ADMIN')}">
+									<li><i class="fa fa-briefcase"></i> <a href="wishlist">#{msg['admin_panel']}</a></li>
+								</ui:fragment>
+								
+								<ui:fragment  rendered="#{sec:areNotGranted('ROLE_ANONYMOUS, ROLE_USER')}">
+									<li><i class="fa fa-briefcase"></i> <a href="wishlist">#{msg['control_panel']}</a></li>
+								</ui:fragment>
+
+								<ui:fragment  rendered="#{sec:areNotGranted('ROLE_ANONYMOUS')}">
+									<li><i class="fa fa-heart-o"></i> <a href="wishlist">#{msg['wishlist']}</a></li>
+								</ui:fragment>
+								
+								<ui:fragment  rendered="#{sec:areNotGranted('ROLE_ANONYMOUS')}">
+									<li><i class="ti-user"></i> <a href="myaccount">#{msg['my_account']}</a></li>
+								</ui:fragment>
+								
+								<ui:fragment  rendered="#{sec:areAnyGranted('ROLE_ANONYMOUS')}">
+									<li><i class="fa fa-user-plus"></i> <a href="register">#{msg['register']}</a></li>
+								</ui:fragment>
+								
+								<ui:fragment  rendered="#{sec:areAnyGranted('ROLE_ANONYMOUS')}">
+									<li><i class="fa fa-sign-in"></i><a href="login">#{msg['login']}</a></li>
+								</ui:fragment>
+								
+								<ui:fragment  rendered="#{sec:areNotGranted('ROLE_ANONYMOUS')}">
+									<li><i class="fa fa-sign-out"></i><a href="logout">#{msg['logout']}</a></li>
+								</ui:fragment>
+								
+							</ul>
+						</div>
+						<!-- End Top Right -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- End Topbar -->
+		<div class="middle-inner">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-2 col-md-2 col-12">
+						<!-- Logo -->
+						<div class="logo">
+							<a href="index.html"><img src="resources/images/logo.png" alt="logo"/></a>
+						</div>
+						<!--/ End Logo -->
+						<!-- Search Form -->
+						<div class="search-top">
+							<div class="top-search"><a href="#0"><i class="ti-search"></i></a></div>
+							<!-- Search Form -->
+							<div class="search-top">
+								<form class="search-form">
+									<input type="text" placeholder="#{msg['mini_search_box_text']}" name="search"/>
+									<button value="search" type="submit"><i class="ti-search"></i></button>
+								</form>
+							</div>
+							<!--/ End Search Form -->
+						</div>
+						<!--/ End Search Form -->
+						<div class="mobile-nav"></div>
+					</div>
+					<div class="col-lg-8 col-md-7 col-12">
+						<div class="search-bar-top">
+							<div class="search-bar">
+								<select>
+									<option selected="selected">All Category</option>
+									<option>Option 1</option>
+									<option>Option 2</option>
+									<option>Option 3</option>
+									<option>...</option>
+								</select>
+								<form>
+									<input name="search" placeholder="#{msg['big_search_box_text']}" type="search"/>
+									<button class="btnn"><i class="ti-search"></i></button>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-2 col-md-3 col-12">
+						<div class="right-bar">
+							<!-- Search Form -->
+							<div class="sinlge-bar">
+								<a href="dailydeals" class="single-icon"><i class="ti-alarm-clock" aria-hidden="true"></i></a>
+							</div>
+							<div class="sinlge-bar shopping">
+								<a href="cart.xhtml" class="single-icon"><i class="ti-bag"></i> <span class="total-count">#{shoppingCartBean.itemsInCartCounter()}</span></a>
+								<!-- Shopping Item -->
+								<div class="shopping-item">
+									<div class="dropdown-cart-header">
+										<span>#{msg['items']} : #{shoppingCartBean.itemsInCartCounter()}</span>
+										<a href="cart.xhtml">#{msg['view_cart']}</a>
+									</div>
+									<ul class="shopping-list">
+										<ui:repeat value="#{shoppingCartBean.items}" var="item">
+											<li>
+												<h:form>
+													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+													<h:commandLink class="remove" title="Remove this item" action="#{shoppingCartBean.removeItemFromCart(item.product.idProduct, false)}">
+														<i class="fa fa-remove"></i>
+													</h:commandLink>
+												</h:form>
+												<a class="cart-img" href="#"><img src="#{item.product.images[0].path}" alt="#"/></a>
+												<h4><a href="#">#{item.product.name}</a></h4>
+												<p class="quantity">#{item.quantity}x - <span class="amount">#{item.product.price} Dhs</span></p>
+											</li>
+										</ui:repeat>
+									</ul>
+									<div class="bottom">
+										<div class="total">
+											<span>#{msg['total']} Dhs</span>
+											<span class="total-amount">#{shoppingCartBean.totalAmount()}</span>
+										</div>
+										<a href="checkout.xhtml" class="btn animate">#{msg['checkout']}</a>
+									</div>
+								</div>
+								<!--/ End Shopping Item -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+
+</ui:composition>

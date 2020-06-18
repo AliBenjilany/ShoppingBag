@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:jsf="http://xmlns.jcp.org/jsf"
+	  xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags">
+	<f:view>
+	
+	
+		<head>
+		
+			<ui:include src="/WEB-INF/ui/head-common.xhtml"></ui:include>
+			
+		</head>
+		
+		<body class="js">
+				
+			<!-- Header -->
+			<header class="header shop">
+				<ui:include src="/WEB-INF/ui/header.xhtml"></ui:include>
+				
+				<!-- Header Inner -->
+				<div class="header-inner">
+					<div class="container">
+						<div class="cat-nav-head">
+							<div class="row">
+								<div class="col-12">
+									<div class="menu-area">
+										<!-- Main Menu -->
+										<nav class="navbar navbar-expand-lg">
+											<div class="navbar-collapse">	
+												<div class="nav-inner">	
+													<ul class="nav main-menu menu navbar-nav">
+														<li><a href="index.xhtml">#{msg['home']}</a></li>
+														<li><a href="product.xhtml">#{msg['products']}</a></li>												
+														<li><a href="#">#{msg['heading3']}</a></li>
+														<li class="active"><a href="#">#{msg['shop']}<i class="ti-angle-down"></i><span class="new">New</span></a>
+															<ul class="dropdown">
+																<li class="active"><a href="cart.xhtml">#{msg['cart']}</a></li>
+																<li><a href="checkout.xhtml">#{msg['checkout']}</a></li>
+															</ul>
+														</li>
+														<li><a href="#">#{msg['heading5']}</a></li>									
+														<li><a href="#">#{msg['blog']}<i class="ti-angle-down"></i></a>
+															<ul class="dropdown">
+																<li><a href="blog-single-sidebar.html">#{msg['blog_sample']}</a></li>
+															</ul>
+														</li>
+														<li><a href="contact.xhtml">#{msg['contact_us']}</a></li>
+													</ul>
+												</div>
+											</div>
+										</nav>
+										<!--/ End Main Menu -->	
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--/ End Header Inner -->
+			</header>
+			
+					
+			<!-- Shopping Cart -->
+			<div class="shopping-cart section">
+				<div class="container">
+					<div class="row">
+						<div class="col-12">
+							<!-- Shopping Summery -->
+							<table class="table shopping-summery">
+								<thead>
+									<tr class="main-hading">
+										<th>#{msg['product']}</th>
+										<th>#{msg['description']}</th>
+										<th class="text-center">#{msg['unit_price']}</th>
+										<th class="text-center">#{msg['quantity']}</th>
+										<th class="text-center">#{msg['total']}</th> 
+										<th class="text-center"><i class="ti-trash remove-icon"></i></th>
+									</tr>
+								</thead>
+								<tbody>
+								
+								
+									<ui:repeat value="#{shoppingCartBean.items}" var="item">
+										<tr>
+											<td class="image" data-title="No"><img src="#{item.product.images[0].path}" alt="#"/></td>
+											<td class="product-des" data-title="Description">
+												<p class="product-name"><a href="#">#{item.product.name}</a></p>
+												<p class="product-des">#{item.product.description}</p>
+											</td>
+											<td class="price" data-title="Price"><span>#{item.product.price} Dh</span></td>
+											<td class="qty" data-title="Qty">
+												<!-- Input Order -->
+												<div class="input-group">
+												
+													<div class="button minus">
+														<h:form>
+															<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+															<h:commandLink type="button" class="btn btn-primary btn-number"  action="#{shoppingCartBean.removeItemFromCart(item.product.idProduct, false)}">
+																<i class="ti-minus" style="padding:20px"></i>
+															</h:commandLink>
+														</h:form>
+													</div>
+													
+													<p class="input-number" style="padding:10px">#{item.quantity}</p>
+													
+													<div class="button plus">
+														<h:form>
+															<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+															<h:commandLink class="btn btn-primary btn-number"  action="#{shoppingCartBean.addItemToCart(item.product.idProduct)}">
+																<i class="ti-plus" style="padding:10px"></i>
+															</h:commandLink>
+														</h:form>
+													</div>
+													
+												</div>
+												<!--/ End Input Order -->
+											</td>
+											<td class="total-amount" data-title="Total"><span>#{item.quantity * item.product.price} Dh</span></td>
+											<td class="action" data-title="Remove">
+												<h:form>
+													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+													<h:commandLink title="Remove this item" action="#{shoppingCartBean.removeItemFromCart(item.product.idProduct, true)}">
+														<i class="ti-trash remove-icon"></i>
+													</h:commandLink>
+												</h:form>
+											</td>
+										</tr>
+									</ui:repeat>
+									
+									
+								</tbody>
+							</table>
+							<!--/ End Shopping Summery -->
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<!-- Total Amount -->
+							<div class="total-amount">
+								<div class="row">
+									<div class="col-lg-8 col-md-5 col-12">
+										<div class="left">
+											<div class="coupon">											
+												<h:form>
+													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+													
+													<h:inputText name="Coupon" value="#{checkoutBean.coupon}"/>
+													<button class="btn" jsf:action="#{checkoutBean.applyCoupon}" jsf:required="true">#{msg['apply']}</button>
+												</h:form>
+											</div>								
+										</div>
+									</div>
+									<div class="col-lg-4 col-md-7 col-12">
+										<div class="right">
+											<ul>
+												<li>#{msg['cart_total']}<span>#{shoppingCartBean.totalAmount()} Dh</span></li>
+												<li>#{msg['you_save']}<span>#{checkoutBean.couponsDiscount(shoppingCartBean.items)} Dh</span></li>
+												<li class="last">#{msg['total']}<span>#{shoppingCartBean.totalAmount() - checkoutBean.couponsDiscount(shoppingCartBean.items)} Dh</span></li>
+											</ul>
+											<div class="button5">
+												<a href="checkout.xhtml" class="btn">#{msg['checkout']}</a>
+												<a href="product.xhtml" class="btn">#{msg['continue_shopping']}</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--/ End Total Amount -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/ End Shopping Cart -->
+			
+			
+			
+			
+			<ui:include src="/WEB-INF/ui/footer-pre.xhtml"></ui:include>
+			<ui:include src="/WEB-INF/ui/footer.xhtml"></ui:include>
+			
+			<!-- Jquery -->
+		    <script src="resources/js/jquery.min.js"></script>
+		    <script src="resources/js/jquery-migrate-3.0.0.js"></script>
+			<script src="resources/js/jquery-ui.min.js"></script>
+			<!-- Popper JS -->
+			<script src="resources/js/popper.min.js"></script>
+			<!-- Bootstrap JS -->
+			<script src="resources/js/bootstrap.min.js"></script>
+			<!-- Color JS -->
+			<script src="resources/js/colors.js"></script>
+			<!-- Slicknav JS -->
+			<script src="resources/js/slicknav.min.js"></script>
+			<!-- Owl Carousel JS -->
+			<script src="resources/js/owl-carousel.js"></script>
+			<!-- Magnific Popup JS -->
+			<script src="resources/js/magnific-popup.js"></script>
+			<!-- Fancybox JS -->
+			<script src="resources/js/facnybox.min.js"></script>
+			<!-- Waypoints JS -->
+			<script src="resources/js/waypoints.min.js"></script>
+			<!-- Countdown JS -->
+			<script src="resources/js/finalcountdown.min.js"></script>
+			<!-- Nice Select JS -->
+			<script src="resources/js/nicesellect.js"></script>
+			<!-- Ytplayer JS -->
+			<script src="resources/js/ytplayer.min.js"></script>
+			<!-- Flex Slider JS -->
+			<script src="resources/js/flex-slider.js"></script>
+			<!-- ScrollUp JS -->
+			<script src="resources/js/scrollup.js"></script>
+			<!-- Onepage Nav JS -->
+			<script src="resources/js/onepage-nav.min.js"></script>
+			<!-- Easing JS -->
+			<script src="resources/js/easing.js"></script>
+			<!-- Active JS -->
+			<script src="resources/js/active.js"></script>
+		</body>
+	</f:view>
+</html>
